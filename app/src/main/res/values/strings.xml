@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Crest</string>
+
+    <string name="scenes">Scenes</string>
+    <string name="go_back">Go back</string>
+    <string name="menu">menu</string>
 </resources>

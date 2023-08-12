@@ -4,8 +4,12 @@ import android.content.res.AssetManager
 import android.view.Surface
 
 class JNITie {
+    companion object{
+        const val INITIALIZED: Boolean = false
+    }
     init {
-        System.loadLibrary("wgpu_template_app")
+        if(!INITIALIZED)
+            System.loadLibrary("wgpu_template_app")
     }
 
     external fun createNativeScene(surface: Surface, assetManager: AssetManager): Long

@@ -9,9 +9,20 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-class CrestSurfaceView: SurfaceView, SurfaceHolder.Callback2 {
+class CrestSurfaceView : SurfaceView, SurfaceHolder.Callback2 {
+
     private var jniTie = JNITie()
     private var nativeSceneObject: Long? = null
+    private lateinit var sceneName: String
+
+
+    constructor(cntx: Context, name: String) : super(cntx) {
+        setName(name)
+    }
+
+    fun setName(name: String) {
+        sceneName = name
+    }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -20,6 +31,7 @@ class CrestSurfaceView: SurfaceView, SurfaceHolder.Callback2 {
         attrs,
         defStyle
     )
+
     init {
         holder.addCallback(this)
         this.setZOrderOnTop(true)
