@@ -1,9 +1,7 @@
 package com.crest.ukraine.scene_characteristics.domain.repository
 
-import com.crest.ukraine.scene_characteristics.domain.model.SceneItem
-import kotlinx.coroutines.flow.Flow
+import com.crest.ukraine.scene_characteristics.domain.model.SceneList
 
 interface SceneRepository {
-    suspend fun getScenes(): List<SceneItem>
-    suspend fun getScene(title: String): SceneItem?
+    suspend fun getScenes(): List<SceneList>
 }

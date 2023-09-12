@@ -3,27 +3,20 @@ package com.crest.ukraine
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.PixelFormat
+import android.service.wallpaper.WallpaperService
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 class CrestSurfaceView : SurfaceView, SurfaceHolder.Callback2 {
 
-    private var jniTie = JNITie()
     private var nativeSceneObject: Long? = null
-    private lateinit var sceneName: String
+    private lateinit var jniTie: JNITie
 
-
-    constructor(cntx: Context, name: String) : super(cntx) {
-        setName(name)
+    constructor(context: Context, assetName: String) : super(context) {
+        jniTie = JNITie(assetName)
     }
-
-    fun setName(name: String) {
-        sceneName = name
-    }
-
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
@@ -40,7 +33,8 @@ class CrestSurfaceView : SurfaceView, SurfaceHolder.Callback2 {
 
     override fun surfaceCreated(p0: SurfaceHolder) {
         holder.let { h ->
-            nativeSceneObject = jniTie.createNativeScene(h.surface, context.assets)
+            nativeSceneObject = jniTie.create(h.surface, context.assets)
+            //nativeSceneObject = jniTie.createNativeScene(h.surface, context.assets, assetNAme = )
             setWillNotDraw(false)
         }
     }

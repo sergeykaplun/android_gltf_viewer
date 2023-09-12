@@ -1,12 +1,13 @@
 package com.crest.ukraine.scene_characteristics.presentation
 
 import android.annotation.SuppressLint
+import android.app.WallpaperManager
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -26,32 +27,36 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import com.crest.ukraine.CrestSurfaceView
 import com.crest.ukraine.R
 import com.crest.ukraine.scene_characteristics.presentation.navigation.Screens
+import com.crest.ukraine.wallpaper.CrestWallpaperService
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(
     navHostController: NavHostController,
-    crestSurfaceView: CrestSurfaceView
+    crestSurfaceView: CrestSurfaceView,
+    context: Context
 ) {
 
     var isMenuExpanded by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
-
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -59,10 +64,15 @@ fun DetailScreen(
                     title = {
                         Text(text = stringResource(id = R.string.scenes))
                     },
+                    backgroundColor = Color.LightGray,
                     navigationIcon = {
-                        IconButton(onClick = {
-                            navHostController.navigate(Screens.ScenesScreen.route)
-                        }) {
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    navHostController.navigate(Screens.ScenesScreen.route)
+                                }
+                            }
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = stringResource(id = R.string.go_back)
@@ -72,7 +82,7 @@ fun DetailScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                isMenuExpanded = true
+                                isMenuExpanded = !isMenuExpanded
                             }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
@@ -83,24 +93,16 @@ fun DetailScreen(
                             expanded = isMenuExpanded,
                             onDismissRequest = { isMenuExpanded = false },
                             modifier = Modifier
-                                .background(Color.LightGray)
+                                .background(Color.LightGray.copy(0.5f))
                         ) {
-                            DropdownMenuItem(onClick = {
-                                coroutineScope.launch {
-                                    isMenuExpanded = false
-                                    //Todo
-                                }
-                            }) {
-                                Text("Option 1")
-                            }
-
-                            DropdownMenuItem(onClick = {
-                                coroutineScope.launch {
-                                    isMenuExpanded = false
-                                    // Todo
-                                }
-                            }) {
-                                Text("Option 2")
+                            DropdownMenuItem(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        startWallpaperChange(context = context)
+                                        isMenuExpanded = false
+                                    }
+                                }) {
+                                Text(stringResource(id = R.string.title_of_button_to_set_wallpaper))
                             }
                         }
                     }
@@ -116,3 +118,13 @@ fun DetailScreen(
         }
     }
 }
+
+private fun startWallpaperChange(context: Context) {
+    val intent = Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER)
+    intent.putExtra(
+        WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
+        ComponentName(context, CrestWallpaperService::class.java)
+    )
+    context.startActivity(intent)
+}
+

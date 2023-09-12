@@ -4,4 +4,8 @@
     <string name="scenes">Scenes</string>
     <string name="go_back">Go back</string>
     <string name="menu">menu</string>
+    <string name="title_of_button_to_set_wallpaper">Set as wallpaper</string>
+
+    <string name="wallpaper_description">My Live Wallpaper Description</string>
+
 </resources>

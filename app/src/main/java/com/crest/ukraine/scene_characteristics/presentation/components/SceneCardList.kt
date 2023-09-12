@@ -1,5 +1,6 @@
 package com.crest.ukraine.scene_characteristics.presentation.components
 
+import android.transition.Scene
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,10 +11,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.crest.ukraine.scene_characteristics.domain.model.SceneItem
+import com.crest.ukraine.scene_characteristics.domain.model.SceneList
 
 @Composable
 fun SceneCardList(

@@ -11,6 +11,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Crest"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/my_wallpaper_info" />
+
+        <service
+            android:name=".wallpaper.CrestWallpaperService"
+            android:enabled="true"
+            android:label="My Live Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/my_wallpaper_info" />
+        </service>
+
         <activity
             android:name=".scene_characteristics.presentation.MainActivity"
             android:exported="true"
